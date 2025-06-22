@@ -1,7 +1,7 @@
 local AddonName, r2r = ...
 
 --[[----------------------------------------------------------------------------
-Button factory for the Ready2Ride SkyButton
+Button factory for the readi2ride SkyButton
 ----------------------------------------------------------------------------]]--
 local function CreateButton()
   --[[--------------------------------------------------------------------------

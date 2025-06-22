@@ -1,12 +1,12 @@
 ## Interface: 110007, 110100, 110105, 110107, 110200
-## Title: Ready2Ride by |cFF78B064readi2play|r 
+## Title: readi2ride 
 ## Notes: Configure a different mount for each zone or for whole continents and allow easy toggle between static and dynamic flying style.
-## IconTexture: Interface\AddOns\Ready2Ride\media\r2r_logo.tga
+## IconTexture: Interface\AddOns\readi2ride\media\r2r_logo.tga
 ## Version: 1.0.8.2
 ## Author: |cFF78B064readi2play|r
-## SavedVariables: Ready2RideDB
-## SavedVariablesPerCharacter: Ready2RideDBChr
-## AddonCompartmentFunc: Ready2Ride_Options
+## SavedVariables: readi2rideDB
+## SavedVariablesPerCharacter: readi2rideDBChr
+## AddonCompartmentFunc: readi2ride_Options
 ## Dependencies: readiLIB
 
 ## LoadOnDemand: 0

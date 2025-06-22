@@ -14,25 +14,31 @@ R2R.data = {["addon"] = R2R.title, ["prefix"] = "R2R", ["colors"] = R2R.Colors}
 --[[----------------------------------------------------------------------------
 TEXTURES
 ----------------------------------------------------------------------------]] --
-Ready2RideLogo = "Interface\\AddOns\\Ready2Ride\\Media\\r2r_logo"
+readi2rideLogo = "Interface\\AddOns\\readi2ride\\Media\\r2r_logo"
 --[[------------------------------------------------------------------------]] --
+MountSelectorSelectionIndicator =
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_SelectionIndicator"
 MountSelectorIconMask =
-    "Interface\\AddOns\\Ready2Ride\\Media\\MountSelector_TileIconMaskrder"
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_IconMask"
+MountSelectorTileBorder =
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_TileBorder"
+MountSelectorTileBackground =
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_TileBackground"
 MountSelectorSelectorNormal =
-    "Interface\\AddOns\\Ready2Ride\\Media\\MountSelector_SelectorNormal"
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_SelectorNormal"
 MountSelectorSelectorHighlight =
-    "Interface\\AddOns\\Ready2Ride\\Media\\MountSelector_SelectorHighlight"
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_SelectorHighlight"
 MountSelectorSelectorActive =
-    "Interface\\AddOns\\Ready2Ride\\Media\\MountSelector_SelectorActive"
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_SelectorActive"
 
 MountSelectorFilterGrounded =
-    "Interface\\AddOns\\Ready2Ride\\Media\\MountSelector_FilterGrounded"
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_FilterGrounded"
 MountSelectorFilterFlying =
-    "Interface\\AddOns\\Ready2Ride\\Media\\MountSelector_FilterFlying"
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_FilterFlying"
 MountSelectorFilterAquatic =
-    "Interface\\AddOns\\Ready2Ride\\Media\\MountSelector_FilterAquatic"
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_FilterAquatic"
 MountSelectorFilterDynamic =
-    "Interface\\AddOns\\Ready2Ride\\Media\\MountSelector_FilterDynamic"
+    "Interface\\AddOns\\readi2ride\\Media\\MountSelector_FilterDynamic"
 --[[------------------------------------------------------------------------]] --
 
 R2R.Locale = GAME_LOCALE or GetLocale()
