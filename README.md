@@ -1,4 +1,4 @@
-# readi2ride-
+# readi2ride
 A Rework of my "DragonridingZoneDrakeButton" WeakAura as an addon with more Options
 
 ## DragonridingZone...What?
