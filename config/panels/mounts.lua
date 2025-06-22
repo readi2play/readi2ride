@@ -34,7 +34,13 @@ function R2R:FillMountsPanel(panel, container, anchorline)
     R2R.Mounts.ScrollFrame:SetScrollChild(R2R.Mounts.ScrollChild)
   end
 
-  local schrollChildHeight = 0
+  local function SetScrollChildHeight()
+    local height = 0
+    for k,v in pairs(R2R.Mounts.sections) do
+      height = height + R2R.Mounts.sections[k]:GetHeight()
+    end
+    return height
+  end
   
   for i=#R2R.db.continents, 1, -1 do
     local map = R2R.db.continents[i]
@@ -42,7 +48,8 @@ function R2R:FillMountsPanel(panel, container, anchorline)
     local wrapperHeight = 0
     local gap = 10
     local mapID = map.zoneID
-    local mapName = C_Map.GetMapInfo(map.zoneID).name
+    if type(mapID) == "table" then mapID = mapID[1] end
+    local mapName = C_Map.GetMapInfo(mapID).name
     local frameName = format("%s_%sMapSection_ID%d", data.prefix, data.keyword, mapID)
     local region = R2R.Mounts.ScrollChild
     local p_anchor = RD.ANCHOR_TOPLEFT
@@ -54,8 +61,6 @@ function R2R:FillMountsPanel(panel, container, anchorline)
       p_anchor = RD.ANCHOR_BOTTOMLEFT
       offsetY = gap * -1
     end
-
-    schrollChildHeight = schrollChildHeight + offsetY
 
     -- remember "SettingsExpandableSectionTemplate" maybe this could be helpful somewhen for now we gonna use "BackdropTemplate"
     R2R.Mounts.sections[i] = R2R.Mounts.sections[i] or CreateFrame("Frame", frameName, R2R.Mounts.ScrollChild, "BackdropTemplate")
@@ -83,42 +88,9 @@ function R2R:FillMountsPanel(panel, container, anchorline)
     R2R.Mounts.sections[i].Title:SetText(RD.Helper.color:Get("r2r", R2R.Colors, mapName))
     
     sectionHeight = sectionHeight + R2R.Mounts.sections[i].Title:GetLineHeight() + gap * 2
-    local cbName = nil
-    if map.hasZones and map.zones then
-      cbName = format("%s_%sUseZones_%d", data.prefix, data.keyword, mapID)
-      R2R.Mounts.fields[cbName] = READI:CheckBox(data, {
-        name = cbName,
-        region = R2R.Mounts.sections[i],
-        enabled = true,
-        label = {
-          string = R2R.L["Use zone specific mounts"],
-          spacing = 0,
-          scale = 1.3,
-        },
-        parent = R2R.Mounts.sections[i].Title,
-        p_anchor = "BOTTOMLEFT",
-        offsetY = -10,
-        offsetX = 0,
-        onClick = function()
-          R2R.db.continents[i].useZones = R2R.Mounts.fields[cbName]:GetChecked()
-          R2R.SkyButton:Update()
-        end,
-      })
-      R2R.Mounts.fields[cbName]:SetChecked(map.useZones)
-      sectionHeight = sectionHeight + R2R.Mounts.fields[cbName]:GetHeight() + gap
-    end
-    local parent = R2R.Mounts.sections[i].Title
-    
-    if cbName then
-      parent = R2R.Mounts.fields[cbName]
-    end
-
-    R2R.Mounts.sections[i].Wrapper = R2R.Mounts.sections[i].Wrapper or CreateFrame("Frame", wrapperName, R2R.Mounts.sections[i])
-    R2R.Mounts.sections[i].Wrapper:ClearAllPoints()
-    R2R.Mounts.sections[i].Wrapper:SetPoint(RD.ANCHOR_TOPLEFT, parent, RD.ANCHOR_BOTTOMLEFT, gap, gap * -1)
 
     local continentMountTitle = R2R.Mounts.sections[i]:CreateFontString(RD.ARTWORK, nil, "GameFontHighlight")
-    continentMountTitle:SetPoint(RD.ANCHOR_TOPLEFT, R2R.Mounts.sections[i].Wrapper, RD.ANCHOR_TOPLEFT, 0, gap * -1)
+    continentMountTitle:SetPoint(RD.ANCHOR_TOPLEFT, R2R.Mounts.sections[i].Title, RD.ANCHOR_BOTTOMLEFT, 0, gap * -1)
     continentMountTitle:SetJustifyH(RD.ANCHOR_LEFT)
     continentMountTitle:SetWidth(R2R.Mounts.sections[i]:GetWidth())
     continentMountTitle:SetText(
@@ -130,27 +102,36 @@ function R2R:FillMountsPanel(panel, container, anchorline)
 
     local c_ebName = format("%s_%sZoneMount_%d", data.prefix, data.keyword, mapID)
     local c_ebVal = ""
+
     if R2R.db.continents[i].mountID ~= "" then
       c_ebVal = C_MountJournal.GetMountInfoByID(R2R.db.continents[i].mountID)
     end
+    
     R2R.Mounts.fields[c_ebName] = R2R.Mounts.fields[c_ebName] or READI:EditBox(data, {
       name = c_ebName,
-      region = R2R.Mounts.sections[i].Wrapper,
+      region = R2R.Mounts.sections[i],
       type = "text",
       value = c_ebVal,
       parent = continentMountTitle,
+      p_anchor = RD.ANCHOR_BOTTOMLEFT,
+      offsetX = 6,
       showButtons = true,
       onChange = function()
         local _old = R2R.db.continents[i].mountID
         local _val = R2R.Mounts.fields[c_ebName]:GetText()
         local _new = nil
+        
         if _val == "" then
           R2R.db.continents[i].mountID = ""
         elseif _val ~= _old then
-          C_MountJournal.SetSearch(_val)
+          C_MountJournal.SetSearch(string.format("\"%s\"",_val))
           _new = C_MountJournal.GetDisplayedMountID(1)
-          print(new)
-          if _new and R2R.db.continents[i].useZones then
+
+          if _new == 0 then
+            _new = C_Spell.GetSpellInfo(_val).spellID
+          end
+
+          if _new then
             R2R.db.continents[i].mountID = _new
           else
             R2R.db.continents[i].mountID = ""
@@ -158,11 +139,11 @@ function R2R:FillMountsPanel(panel, container, anchorline)
           C_MountJournal.SetSearch("")
         end
         R2R.SkyButton:Update()
-      end,
+      end
     })
     R2R.Mounts.fields[c_ebName.."Button"] = R2R.Mounts.fields[c_ebName.."Button"] or READI:Button(data, {
       name = c_ebName.."Button",
-      region = R2R.Mounts.sections[i].Wrapper,
+      region = R2R.Mounts.sections[i],
       label = R2R.L["Select"],
       height = 22,
       anchor = RD.ANCHOR_LEFT,
@@ -175,37 +156,43 @@ function R2R:FillMountsPanel(panel, container, anchorline)
         R2R.MountSelector:Open(field)
       end,
     })
-    wrapperHeight = R2R.Mounts.fields[c_ebName]:GetHeight() + gap
-    sectionHeight = sectionHeight + wrapperHeight
-    R2R.Mounts.sections[i].Wrapper:SetSize(columnWidth, wrapperHeight)
+    sectionHeight = sectionHeight + R2R.Mounts.fields[c_ebName]:GetHeight() + gap
 
-    if map.hasZones and map.zones then
+    local cbName = nil
+    local wrapperName = format("%s_%sSubZonesWrapper_%d", data.prefix, data.keyword, mapID)
+
+    R2R.Mounts.sections[i].Wrapper = R2R.Mounts.sections[i].Wrapper or CreateFrame("Frame", wrapperName, R2R.Mounts.sections[i])
+    R2R.Mounts.sections[i].Wrapper:ClearAllPoints()
+    R2R.Mounts.sections[i].Wrapper:SetPoint(RD.ANCHOR_TOPLEFT, R2R.Mounts.sections[i].Title, RD.ANCHOR_BOTTOMLEFT, gap, gap * -1)
+
+    if map.zones and #map.zones >=1 then
       R2R.Mounts.sections[i].subs = R2R.Mounts.sections[i].subs or {}
-
+      
       for k, zone in ipairs(map.zones) do
-        local wrapperName = format("%s_%sZoneWrapper_%d_%d", data.prefix, data.keyword, mapID, zone.zoneID)
-        local wrapperHeight = 0
+        local subHeight = 0
+        local zoneID = zone.zoneID
+        if type(zoneID) == "table" then zoneID = zoneID[1] end
+        local subName = format("%s_%sZoneWrapper_%d_%d", data.prefix, data.keyword, mapID, zoneID)
 
-        R2R.Mounts.sections[i].subs[k] = R2R.Mounts.sections[i].subs[k] or CreateFrame("Frame", wrapperName, R2R.Mounts.sections[i])
+        R2R.Mounts.sections[i].subs[k] = R2R.Mounts.sections[i].subs[k] or CreateFrame("Frame", subName, R2R.Mounts.sections[i].Wrapper)
         R2R.Mounts.sections[i].subs[k]:ClearAllPoints()
         R2R.Mounts.sections[i].subs[k]:SetWidth(columnWidth)
 
-        local parent = R2R.Mounts.fields[c_ebName]
+        local parent = R2R.Mounts.sections[i].Wrapper
         local offsetX = 0
-        local offsetY = gap * -2
-        local p_anchor = RD.ANCHOR_BOTTOMLEFT
+        local offsetY = 0
+        local p_anchor = RD.ANCHOR_TOPLEFT
 
         if k % r2r.columns == 0 then
           parent = R2R.Mounts.sections[i].subs[k - 1]
           offsetX = 10
-          offsetY = 0
           p_anchor = RD.ANCHOR_TOPRIGHT
         elseif k > r2r.columns and k % r2r.columns == 1 then
           offsetY = gap * -1
           parent = R2R.Mounts.sections[i].subs[k - r2r.columns]
+          p_anchor = RD.ANCHOR_BOTTOMLEFT
         end
-
-        R2R.Mounts.sections[i].subs[k]:SetPoint(RD.ANCHOR_TOPLEFT, parent, p_anchor, offsetX, 0)
+        R2R.Mounts.sections[i].subs[k]:SetPoint(RD.ANCHOR_TOPLEFT, parent, p_anchor, offsetX, offsetY)
         
         R2R.Mounts.sections[i].subs[k].Title = R2R.Mounts.sections[i].subs[k].Title or R2R.Mounts.sections[i].subs[k]:CreateFontString(RD.ARTWORK, nil, "GameFontHighlight")
         R2R.Mounts.sections[i].subs[k].Title:SetPoint(RD.ANCHOR_TOPLEFT, R2R.Mounts.sections[i].subs[k], RD.ANCHOR_TOPLEFT, gap, gap * -1)
@@ -213,15 +200,19 @@ function R2R:FillMountsPanel(panel, container, anchorline)
         R2R.Mounts.sections[i].subs[k].Title:SetWidth(columnWidth)
         R2R.Mounts.sections[i].subs[k].Title:SetText(
           RD.Helper.color:Get("white", nil, R2R.L["Select the mount to be used for:"]).."\n"..
-          RD.Helper.color:Get("r2r_light", R2R.Colors, C_Map.GetMapInfo(zone.zoneID).name)..
-          RD.Helper.color:Get("white", nil, format(" (mapID: %d)", zone.zoneID))
+          RD.Helper.color:Get("r2r_light", R2R.Colors, C_Map.GetMapInfo(zoneID).name)..
+          RD.Helper.color:Get("white", nil, format(" (mapID: %d)", zoneID))
         )
-        wrapperHeight = wrapperHeight + (R2R.Mounts.sections[i].subs[k].Title:GetLineHeight() * R2R.Mounts.sections[i].subs[k].Title:GetNumLines()) + gap
+        subHeight = subHeight + (R2R.Mounts.sections[i].subs[k].Title:GetLineHeight() * R2R.Mounts.sections[i].subs[k].Title:GetNumLines())
 
-        local z_ebName = format("%s_%sZoneMount_%d_%d", data.prefix, data.keyword, mapID, zone.zoneID)
+        local z_ebName = format("%s_%sZoneMount_%d_%d", data.prefix, data.keyword, mapID, zoneID)
         local z_ebVal = ""
         if R2R.db.continents[i].zones[k].mountID ~= "" then
-          z_ebVal = C_MountJournal.GetMountInfoByID(R2R.db.continents[i].zones[k].mountID)
+          if R2R:IsMount(R2R.db.continents[i].zones[k].mountID) then
+            z_ebVal = C_MountJournal.GetMountInfoByID(R2R.db.continents[i].zones[k].mountID)
+          else
+            z_ebVal = C_Spell.GetSpellInfo(R2R.db.continents[i].zones[k].mountID).name
+          end
         end
 
         R2R.Mounts.fields[z_ebName] = R2R.Mounts.fields[z_ebName] or READI:EditBox(data, {
@@ -235,11 +226,17 @@ function R2R:FillMountsPanel(panel, container, anchorline)
             local _old = R2R.db.continents[i].zones[k].mountID
             local _val = R2R.Mounts.fields[z_ebName]:GetText()
             local _new = nil
+
             if _val == "" then
               R2R.db.continents[i].zones[k].mountID = ""
             elseif _val ~= _old then
-              C_MountJournal.SetSearch(_val)
+              C_MountJournal.SetSearch(string.format("\"%s\"",_val))
               _new = C_MountJournal.GetDisplayedMountID(1)
+
+              if _new == 0 then
+                _new = C_Spell.GetSpellInfo(_val).spellID
+              end
+
               if _new and R2R.db.continents[i].useZones then
                 R2R.db.continents[i].zones[k].mountID = _new
               else
@@ -265,22 +262,63 @@ function R2R:FillMountsPanel(panel, container, anchorline)
             R2R.MountSelector:Open(field)
           end,
         })
-      
-        wrapperHeight = wrapperHeight + R2R.Mounts.fields[z_ebName]:GetHeight()
+        subHeight = subHeight + R2R.Mounts.fields[z_ebName]:GetHeight() + gap
 
-        R2R.Mounts.sections[i].subs[k]:SetSize(columnWidth, wrapperHeight)
+        R2R.Mounts.sections[i].subs[k]:SetSize(columnWidth, subHeight)
+
         if k % r2r.columns == 0 or k == #map.zones then
-          sectionHeight = sectionHeight + wrapperHeight
+          wrapperHeight = wrapperHeight + subHeight + gap
         end
       end
+
+      R2R.Mounts.sections[i].Wrapper:SetSize(R2R.Mounts.ScrollChild:GetWidth(), wrapperHeight)
+
+      cbName = format("%s_%sUseZones_%d", data.prefix, data.keyword, mapID)
+      R2R.Mounts.fields[cbName] = READI:CheckBox(data, {
+        name = cbName,
+        region = R2R.Mounts.sections[i],
+        enabled = true,
+        label = {
+          string = R2R.L["Use zone specific mounts"],
+          spacing = 0,
+          scale = 1.3,
+        },
+        parent = R2R.Mounts.fields[c_ebName],
+        p_anchor = "BOTTOMLEFT",
+        offsetY = -10,
+        offsetX = -6,
+        onClick = function()
+          local state = R2R.Mounts.fields[cbName]:GetChecked()
+          R2R.db.continents[i].useZones = state
+          R2R.SkyButton:Update()
+          
+          if state then
+            R2R.Mounts.sections[i]:SetHeight(sectionHeight + wrapperHeight)
+          else
+            R2R.Mounts.sections[i]:SetHeight(sectionHeight)
+          end
+
+          R2R.Mounts.ScrollChild:SetHeight(SetScrollChildHeight())
+        end,
+      })
+      R2R.Mounts.fields[cbName]:SetChecked(map.useZones)
+
+      sectionHeight = sectionHeight + R2R.Mounts.fields[cbName]:GetHeight() + gap
+
+      R2R.Mounts.sections[i].Wrapper:ClearAllPoints()
+      R2R.Mounts.sections[i].Wrapper:SetPoint(RD.ANCHOR_TOPLEFT, R2R.Mounts.fields[cbName], RD.ANCHOR_BOTTOMLEFT, gap, gap * -1)  
+
+      if map.useZones and R2R.Mounts.fields[cbName]:GetChecked() then
+        R2R.Mounts.sections[i]:SetHeight(sectionHeight + wrapperHeight)
+      else
+        R2R.Mounts.sections[i]:SetHeight(sectionHeight)
+      end
+    else
+      R2R.Mounts.sections[i]:SetHeight(sectionHeight)
     end
 
     --[[ DEFINE SECTION HEIGHT ------------------------------------------------]]--
-    R2R.Mounts.sections[i]:SetHeight(sectionHeight)
-    schrollChildHeight = schrollChildHeight + R2R.Mounts.sections[i]:GetHeight()
-    -- print(mapName, R2R.Mounts.sections[i]:GetNumChildren())
   end
-
-  R2R.Mounts.ScrollChild:SetHeight(schrollChildHeight)
+  R2R.Mounts.ScrollChild:SetHeight(SetScrollChildHeight())
   R2R.MountSelector:Init()
 end

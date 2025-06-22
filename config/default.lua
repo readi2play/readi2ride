@@ -15,66 +15,69 @@ R2R.defaults = {
   bindings = {
     indoors = "",
     swimming = {
-      mount = 420,
+      mount = "",
       ability = ""
     },
   },
   continents = {
     { -- Darkmoon Island
       zoneID = 407,
-      hasZones = false,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
+    },
+    { -- Dalaran
+      zoneID = {125,126,501,502,626,627,628,629,2305,2306,2307},
+      useZones = false,
+      mountID = "",
     },
     { -- Kalimdor
       zoneID = 12,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
         -- Ashenvale
         {
-          zoneID = 63,
+          zoneID = {63,1310},
           mountID = ""
         },
         -- Azshara
         {
-          zoneID = 76,
+          zoneID = {76,697,1317},
           mountID = ""
         },
         -- Azuremyst Isle
         {
-          zoneID = 97,
+          zoneID = {97,776,891,892,893,894,1325},
           mountID = ""
         },
         -- Bloodmyst Isle
         {
-          zoneID = 106,
+          zoneID = {106,1327},
           mountID = ""
         },
         -- Darkshore
         {
-          zoneID = 62,
+          zoneID = {62,1203,1309,1332,1333,1338,1343},
           mountID = ""
         },
         -- Darnassus
         {
-          zoneID = 89,
+          zoneID = {89,1324},
           mountID = ""
         },
         -- Desolace
         {
-          zoneID = 66,
+          zoneID = {66,1313},
           mountID = ""
         },
         -- Durotar
         {
-          zoneID = 1,
+          zoneID = {1,1305,1535},
           mountID = ""
         },
         -- Dustwallow Marsh
         {
-          zoneID = 70,
+          zoneID = {70,416,483,1315},
           mountID = ""
         },
         -- Echo Isles
@@ -84,97 +87,92 @@ R2R.defaults = {
         },
         -- Felwood
         {
-          zoneID = 77,
+          zoneID = {77,1318},
           mountID = ""
         },
         -- Feralas
         {
-          zoneID = 69,
+          zoneID = {69,1314},
           mountID = ""
         },
         -- Moonglade
         {
-          zoneID = 80,
+          zoneID = {80,1320},
           mountID = ""
         },
         -- Mount Hyjal
         {
-          zoneID = 198,
+          zoneID = {198,1328},
           mountID = ""
         },
         -- Mulgore
         {
-          zoneID = 7,
+          zoneID = {7,1306},
           mountID = ""
         },
         -- Northern Barrens
         {
-          zoneID = 10,
+          zoneID = {10,1307},
           mountID = ""
         },
         -- Orgrimmar
         {
-          zoneID = 85,
-          mountID = ""
-        },
-        -- Orgrimmar Cleft of Shadow
-        {
-          zoneID = 86,
+          zoneID = {85,86,1469,1534,2403},
           mountID = ""
         },
         -- Silithus
         {
-          zoneID = 81,
+          zoneID = {81,1321,2354},
           mountID = ""
         },
         -- Southern Barrens
         {
-          zoneID = 199,
+          zoneID = {199,1329},
           mountID = ""
         },
         -- Stonetalon Mountains
         {
-          zoneID = 65,
+          zoneID = {65,1312},
           mountID = ""
         },
         -- Tanaris
         {
-          zoneID = 71,
+          zoneID = {71,1316},
           mountID = ""
         },
         -- Teldrassil
         {
-          zoneID = 57,
+          zoneID = {57,1308},
           mountID = ""
         },
         -- The Exodar
         {
-          zoneID = 103,
+          zoneID = {103,1326,1331},
           mountID = ""
         },
         -- Thunder Bluff
         {
-          zoneID = 88,
+          zoneID = {88,1323},
           mountID = ""
         },
         -- Thousand Needles
         {
-          zoneID = 64,
+          zoneID = {64,1311},
           mountID = ""
         },
         -- Uldum
         {
-          zoneID = 1527,
+          zoneID = {249,1330,1527},
           mountID = ""
         },
         -- Un'Goro Crater
         {
-          zoneID = 78,
+          zoneID = {78,1319},
           mountID = ""
         },
         -- Winterspring
         {
-          zoneID = 83,
+          zoneID = {83,1322},
           mountID = ""
         },
         -- Ahn'Qiraj, the fallen kingdom (Outside)
@@ -182,223 +180,201 @@ R2R.defaults = {
           zoneID = 327,
           mountID = ""
         },
-        -- Ruins of Ahn'Oraj
-        {
-          zoneID = 247,
-          mountID = ""
-        },
-        -- Temple of Ahn'Qiraj
-        {
-          zoneID = 320,
-          mountID = ""
-        },
       }
     },
     { -- Eastern Kingdoms
       zoneID = 13,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
         -- Arathi Highlands
         {
-          zoneID = 14,
+          zoneID = {14,906,943,1044,1158,1244,2257,2372},
           mountID = ""
         },
         -- Badlands
         {
-          zoneID = 15,
+          zoneID = {15,1245},
           mountID = ""
         },
         -- Blackrock Mountain
         {
-          zoneID = 33,
+          zoneID = {33,34,35,838},
           mountID = ""
         },
         -- Blasted Lands
         {
-          zoneID = 17,
+          zoneID = {17,1246},
           mountID = ""
         },
         -- Burning Steppes
         {
-          zoneID = 36,
+          zoneID = {36,1255},
           mountID = ""
         },
-        -- Cape of Strangethorn
+        -- Cape of Stranglethorn
         {
           zoneID = 210,
           mountID = ""
         },
         -- Deadwind Pass
         {
-          zoneID = 42,
+          zoneID = {42,1257},
           mountID = ""
         },
         -- Deeprun Tram
         {
-          zoneID = 499,
+          zoneID = {499,500},
           mountID = ""
         },
         -- Dun Morogh
         {
-          zoneID = 29,
+          zoneID = {29,523,1253},
           mountID = ""
         },
         -- Duskwood
         {
-          zoneID = 47,
+          zoneID = {47,1258},
           mountID = ""
         },
         -- Eastern Plaguelands
         {
-          zoneID = 23,
+          zoneID = {23,1250},
           mountID = ""
         },
         -- Elwynn Forest
         {
-          zoneID = 37,
+          zoneID = {37,1256},
           mountID = ""
         },
         -- Eversong Woods
         {
-          zoneID = 94,
+          zoneID = {94,1267},
           mountID = ""
         },
         -- Ghostlands
         {
-          zoneID = 95,
+          zoneID = {95,1268},
           mountID = ""
         },
         -- Hillsbrad Foothills
         {
-          zoneID = 25,
+          zoneID = {25,623,1251},
           mountID = ""
         },
         -- Ironforge
         {
-          zoneID = 87,
+          zoneID = {87,1265,1361},
           mountID = ""
         },
         -- Isle of Quel'Danas
         {
-          zoneID = 122,
+          zoneID = {122,1270},
           mountID = ""
         },
         -- Loch Modan
         {
-          zoneID = 48,
+          zoneID = {48,1259},
           mountID = ""
         },
         -- Northern Stranglethorn
         {
-          zoneID = 50,
+          zoneID = {50,224,1274},
           mountID = ""
         },
         -- Redridge Mountains
         {
-          zoneID = 49,
+          zoneID = {49,1260},
           mountID = ""
         },
-        -- Ruins of Gilneas
+        -- Gilneas
         {
-          zoneID = 217,
+          zoneID = {179,202,217,218,938,1271,1273,1577},
           mountID = ""
         },
         -- Searing Gorge
         {
-          zoneID = 32,
+          zoneID = {32,1254},
           mountID = ""
         },
         -- Silvermoon City
         {
-          zoneID = 110,
+          zoneID = {110,1269},
           mountID = ""
         },
         -- Silverpine Forest
         {
-          zoneID = 21,
+          zoneID = {21,1248},
           mountID = ""
         },
         -- Stormwind City
         {
-          zoneID = 84,
+          zoneID = {84,1012,1264},
           mountID = ""
         },
         -- Swamp of Sorrows
         {
-          zoneID = 51,
+          zoneID = {51,1261},
           mountID = ""
         },
         -- The Hinterlands
         {
-          zoneID = 26,
+          zoneID = {26,1252},
           mountID = ""
         },
         -- Tirisfal Glades
         {
-          zoneID = 18,
+          zoneID = {18,997,1247,2070},
           mountID = ""
         },
         -- Tol Barad
         {
-          zoneID = 245,
+          zoneID = {245,1277,244,773,774,1276},
           mountID = ""
         },
         -- Twilight Highlands
         {
-          zoneID = 241,
+          zoneID = {241,1275,1476},
           mountID = ""
         },
         -- Undercity
         {
-          zoneID = 90,
+          zoneID = {90,998,1266},
           mountID = ""
         },
-        -- Vashj"ir: Kelp'thar Forest
+        -- Vashj'ir
         {
-          zoneID = 201,
-          mountID = ""
-        },
-        -- Vashj"ir: Shimmering Expanse
-        {
-          zoneID = 205,
-          mountID = ""
-        },
-        -- Vashj"ir: Abyssal Depths
-        {
-          zoneID = 204,
+          zoneID = {203,201,204,205},
           mountID = ""
         },
         -- Western Plaguelands
         {
-          zoneID = 22,
+          zoneID = {22,1249},
           mountID = ""
         },
         -- Westfall
         {
-          zoneID = 52,
+          zoneID = {52,1262},
           mountID = ""
         },
         -- Wetlands
         {
-          zoneID = 56,
+          zoneID = {56,1263},
           mountID = ""
         },
       }
     },
     { -- Outland
       zoneID = 101,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
-        -- Blades Edge Mountains
+        -- Blade's Edge Mountains
         {
           zoneID = 105,
           mountID = ""
         },
-        -- Hellfire Penninsula
+        -- Hellfire Peninsula
         {
           zoneID = 100,
           mountID = ""
@@ -418,17 +394,17 @@ R2R.defaults = {
           zoneID = 104,
           mountID = ""
         },
-        -- Terrokkar Forest
+        -- Terokkar Forest
         {
           zoneID = 108,
           mountID = ""
         },
-        -- Zangermarsh
+        -- Zangarmarsh
         {
           zoneID = 102,
           mountID = ""
         },
-        -- Shattrath
+        -- Shattrath City
         {
           zoneID = 111,
           mountID = ""
@@ -437,81 +413,74 @@ R2R.defaults = {
     },
     { -- Northrend
       zoneID = 113,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
         -- Borean Tundra
         {
-          zoneID = 114,
+          zoneID = {114,1396},
           mountID = ""
         },
         -- Crystalsong Forest
         {
-          zoneID = 127,
-          mountID = ""
-        },
-        -- Dalaran
-        {
-          zoneID = 125,
-          mountID = ""
-        },
-        -- Dalaran Underbelly
-        {
-          zoneID = 126,
+          zoneID = {127,1405},
           mountID = ""
         },
         -- Dragonblight
         {
-          zoneID = 115,
+          zoneID = {115,1397},
           mountID = ""
         },
         -- Grizzly Hills
         {
-          zoneID = 116,
+          zoneID = {116,1398},
           mountID = ""
         },
         -- Howling Fjord
         {
-          zoneID = 117,
+          zoneID = {117,1399},
           mountID = ""
         },
         -- Icecrown
         {
-          zoneID = 118,
+          zoneID = {118,1400},
           mountID = ""
         },
         -- Sholazar Basin
         {
-          zoneID = 119,
+          zoneID = {119,1401},
           mountID = ""
         },
         -- The Storm Peaks
         {
-          zoneID = 120,
+          zoneID = {120,1402},
           mountID = ""
         },
         -- Wintergrasp
         {
-          zoneID = 123,
+          zoneID = {123,1334,1404},
           mountID = ""
         },
-        -- Zul' Drak
+        -- Zul'Drak
         {
-          zoneID = 121,
+          zoneID = {121,1403},
           mountID = ""
         },
       }
     },
-    { -- Azeroth (Cataclysm)
-      zoneID = 947,
-      hasZones = true,
+    { -- The Maelstrom
+      zoneID = 948,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
-        -- Maelstrom
+        -- Kezan
         {
-          zoneID = 948,
+          zoneID = 194,
+          mountID = ""
+        },
+        -- The Lost Isles
+        {
+          zoneID = 174,
           mountID = ""
         },
         -- Deepholm
@@ -523,48 +492,12 @@ R2R.defaults = {
     },
     { -- Pandaria
       zoneID = 424,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
-        -- Dread Wastes
-        {
-          zoneID = 422,
-          mountID = ""
-        },
-        -- Isle of Thunder
-        {
-          zoneID = 504,
-          mountID = ""
-        },
-        -- Karasarang Wilds
-        {
-          zoneID = 418,
-          mountID = ""
-        },
-        -- Kun-Lai Summit
-        {
-          zoneID = 379,
-          mountID = ""
-        },
         -- The Jade Forest
         {
-          zoneID = 371,
-          mountID = ""
-        },
-        -- The Veiled Stair
-        {
-          zoneID = 433,
-          mountID = ""
-        },
-        -- Timeless Isle
-        {
-          zoneID = 554,
-          mountID = ""
-        },
-        -- Townlong Steppes
-        {
-          zoneID = 388,
+          zoneID = {371,448},
           mountID = ""
         },
         -- Valley of the Four Winds
@@ -572,57 +505,66 @@ R2R.defaults = {
           zoneID = 376,
           mountID = ""
         },
+        -- Kun-Lai Summit
+        {
+          zoneID = 379,
+          mountID = ""
+        },
+        -- Townlong Steppes
+        {
+          zoneID = 388,
+          mountID = ""
+        },
         -- Vale of Eternal Blossoms
         {
-          zoneID = 390,
+          zoneID = {390,391,392,393,394,520,521,1530,1570},
           mountID = ""
         },
-        -- Shrine of Two Moons
+        -- Krasarang Wilds
         {
-          zoneID = 392,
+          zoneID = {418,486,498},
           mountID = ""
         },
-        -- Shrine of the Seven Stars
+        -- Dread Wastes
         {
-          zoneID = 393,
+          zoneID = 422,
+          mountID = ""
+        },
+        -- The Veiled Stair
+        {
+          zoneID = 433,
+          mountID = ""
+        },
+        -- Isle of Thunder
+        {
+          zoneID = {504,516},
+          mountID = ""
+        },
+        -- Isle of Giants
+        {
+          zoneID = 507,
+          mountID = ""
+        },
+        -- Timeless Isle
+        {
+          zoneID = 554,
           mountID = ""
         },
       }
     },
     { -- Draenor
       zoneID = 572,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
-        -- Ashran
-        {
-          zoneID = 588,
-          mountID = ""
-        },
         -- Frostfire Ridge
         {
-          zoneID = 525,
+          zoneID = {525, 585,586,587,590},
           mountID = ""
         },
-        -- Gorgrond
+        -- Tanaan Jungle
         {
-          zoneID = 543,
-          mountID = ""
-        },
-        -- Nagrand
-        {
-          zoneID = 550,
-          mountID = ""
-        },
-        -- Shadowmoon Valley
-        {
-          zoneID = 539,
-          mountID = ""
-        },
-        -- Spires of Arak
-        {
-          zoneID = 542,
+          zoneID = {534,577},
           mountID = ""
         },
         -- Talador
@@ -630,47 +572,56 @@ R2R.defaults = {
           zoneID = 535,
           mountID = ""
         },
-        -- Tanaan Jungle
+        -- Shadowmoon Valley
         {
-          zoneID = 534,
+          zoneID = {539,579,580,581,582},
           mountID = ""
         },
-        -- Warspear
+        -- Spires of Arak
         {
-          zoneID = 624,
+          zoneID = 542,
           mountID = ""
         },
-        -- Garrison
+        -- Gorgrond
         {
-          zoneID = 590,
+          zoneID = {543,1170},
+          mountID = ""
+        },
+        -- Nagrand
+        {
+          zoneID = 550,
+          mountID = ""
+        },
+        -- Ashran
+        {
+          zoneID = {588,589,624,1408,1478},
           mountID = ""
         },
       }
     },
     { -- The Broken Isles
       zoneID = 619,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
         -- Azsuna
         {
-          zoneID = 630,
+          zoneID = {630,790,867,1187},
           mountID = ""
         },
-        -- Dalaran
+        -- Stormheim
         {
-          zoneID = 627,
+          zoneID = {634,696,865,866,1190},
           mountID = ""
         },
-        -- Dalaran Underbelly
+        -- Val'sharah
         {
-          zoneID = 628,
+          zoneID = {641,715,747,868,1188,1642},
           mountID = ""
         },
-        -- Eye of Azshara
+        -- The Broken Shore
         {
-          zoneID = 790,
+          zoneID = {646,676,1192},
           mountID = ""
         },
         -- Helheim
@@ -680,12 +631,12 @@ R2R.defaults = {
         },
         -- Highmountain
         {
-          zoneID = 650,
+          zoneID = {650,869,870,1189},
           mountID = ""
         },
-        -- Stormheim
+        -- Thunder Totem
         {
-          zoneID = 634,
+          zoneID = {652, 750},
           mountID = ""
         },
         -- Suramar
@@ -693,171 +644,150 @@ R2R.defaults = {
           zoneID = 680,
           mountID = ""
         },
-        -- The Broken Shore
+        -- Skyhold
         {
-          zoneID = 646,
+          zoneID = {695,1971},
           mountID = ""
         },
-        -- Thundertotem (indoors)
+        -- Netherlight Temple
         {
-          zoneID = 652,
+          zoneID = 702,
           mountID = ""
         },
-        -- Thundertotem (outdoors)
+        -- Mardum, the Shattered Abyss
         {
-          zoneID = 750,
+          zoneID = {672,719,720,721,861,879,880},
           mountID = ""
         },
-        -- Val'sharah
+        -- Shadowgore Citadel
         {
-          zoneID = 641,
-          mountID = ""
-        },
-        -- Val'sharah Dreamgrove
-        {
-          zoneID = 747,
-          mountID = ""
-        },
-        -- Val'sharah Emerald Dreamway
-        {
-          zoneID = 715,
+          zoneID = {740, 741},
           mountID = ""
         },
       }
     },
     { -- Argus
-      zoneID = 905,
-      hasZones = true,
+      zoneID = {905,994},
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
-        -- Argus: Antoran Wastes
-        {
-          zoneID = 885,
-          mountID = ""
-        },
-        -- Argus: Eredath
-        {
-          zoneID = 882,
-          mountID = ""
-        },
-        -- Argus: Krokuun
+        -- Krokuun
         {
           zoneID = 830,
           mountID = ""
         },
-        -- Argus: The Vindicaar
+        -- Eredath
         {
-          zoneID = 831,
+          zoneID = 882,
+          mountID = ""
+        },
+        -- Antoran Wastes
+        {
+          zoneID = 885,
           mountID = ""
         },
       }
     },
     { -- Zandalar
       zoneID = 875,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
-        -- Dazaralor
+        -- Dazar'alor
         {
-          zoneID = 1165,
-          mountID = ""
-        },
-        -- Dazaralor The Great Seal
-        {
-          zoneID = 1163,
-          mountID = ""
-        },
-        -- Nazmir
-        {
-          zoneID = 863,
-          mountID = ""
-        },
-        -- Vol'dun
-        {
-          zoneID = 864,
+          zoneID = {1163,1164,1165},
           mountID = ""
         },
         -- Zuldazar
         {
-          zoneID = 862,
+          zoneID = {862,1193},
+          mountID = ""
+        },
+        -- Nazmir
+        {
+          zoneID = {863,1194},
+          mountID = ""
+        },
+        -- Vol'dun
+        {
+          zoneID = {864,1195},
           mountID = ""
         },
       }
     },
     { -- Kul-Tiras
       zoneID = 876,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
         -- Boralus
         {
           zoneID = 1161,
           mountID = ""
         },
+        -- Tiragarde Sound
+        {
+          zoneID = {895,1196},
+          mountID = ""
+        },
         -- Drustvar
         {
-          zoneID = 896,
+          zoneID = {896,1197},
           mountID = ""
         },
         -- Stormsong Valley
         {
-          zoneID = 942,
+          zoneID = {942,1198},
           mountID = ""
         },
-        -- Tiragarde Sound
-        {
-          zoneID = 895,
+        { -- Tol Dagor
+          zoneID = 1169,
           mountID = ""
         },
-        { -- Mechagon
+        { -- Mechagon Island
           zoneID = 1462,
-          mountID = "",
+          mountID = ""
         },
       }
     },
     { -- Nazjatar
-      zoneID = 1355,
-      hasZones = false,
+      zoneID = {1355,1504},
       useZones = false,
-      mountID = 1792,
+      mountID = "",
     },
     { -- Shadowlands
       zoneID = 1550,
-      hasZones = true,
       useZones = false,
-      mountID = 1792,
+      mountID = "",
       zones = {
-        -- Ardenweald
+        -- Revendreth
         {
-          zoneID = 1565,
+          zoneID = {1525,1742},
           mountID = ""
         },
         -- Bastion
         {
-          zoneID = 1533,
+          zoneID = {1533,1569},
           mountID = ""
         },
         -- Maldraxxus
         {
-          zoneID = 1536,
+          zoneID = {1536,1741},
           mountID = ""
         },
-        -- Revendreth
+        -- The Maw
         {
-          zoneID = 1525,
+          zoneID = {1543,1960},
           mountID = ""
         },
-        -- Oribos main quest floor
+        -- Ardenweald
         {
-          zoneID = 1670,
+          zoneID = {1565,1643,1740},
           mountID = ""
         },
-        -- Oribos FP & Portals level
+        -- Oribos
         {
-          zoneID = 1671,
+          zoneID = {1670,1671,1672,1673},
           mountID = ""
         },
         -- Korthia
@@ -865,129 +795,59 @@ R2R.defaults = {
           zoneID = 1961,
           mountID = ""
         },
-        -- The Maw
-        {
-          zoneID = 1543,
-          mountID = ""
-        },
         -- Zereth Mortis
         {
-          zoneID = 1970,
-          mountID = ""
-        },
-        -- Tazavesh (Dungeon)
-        {
-          zoneID = 1989,
-          mountID = ""
-        },
-        -- Tazavesh (Outside)
-        {
-          zoneID = 2016,
+          zoneID = {1970,2046},
           mountID = ""
         },
       }
     },
     { -- Dragon Isles
       zoneID = 1978,
-      hasZones = true,
-      useZones = true,
-      mountID = 1589,
+      useZones = false,
+      mountID = "",
       zones = {
         -- The Waking Shores
         {
-          zoneID = 2022,
-          mountID = 1589
+          zoneID = {2022,2127},
+          mountID = ""
         },
-        -- Ohn'ahra Plains
+        -- Ohn'ahran Plains
         {
-          zoneID = 2023,
-          mountID = 1590
+          zoneID = {2023,2129,2149,2239,2268},
+          mountID = ""
         },
-        -- Azure Span
+        -- The Azure Span
         {
-          zoneID = 2024,
-          mountID = 1563
+          zoneID = {2024,2128,2132},
+          mountID = ""
         },
         -- Thaldraszus
         {
-          zoneID = 2025,
-          mountID = 1591
-        },
-        -- Valdrakken
-        {
-          zoneID = 2112,
-          mountID = 1591
+          zoneID = {2025,2113,2130,2134,2135, 2085},
+          mountID = ""
         },
         -- Forbidden Reach
         {
-          zoneID = 2151,
-          mountID = 1589
+          zoneID = {2107,2118,2131,2151},
+          mountID = ""
         },
         -- Zaralek Cavern
         {
-          zoneID = 2133,
-          mountID = 1589
+          zoneID = {2133,2175,2184},
+          mountID = ""
         },
         -- Emerald Dream
         {
-          zoneID = 2200,
-          mountID = 1589
-        },
-        -- Bel'ameth
-        {
-          zoneID = 2239,
-          mountID = "",
-        },
-        -- Primalist Tomorrow
-        {
-          zoneID = 2085,
-          mountID = "",
-        },
-        -- Ruby Life Pools
-        {
-          zoneID = 2094,
-          mountID = "",
-        },
-        -- Neltharus
-        {
-          zoneID = 2080,
-          mountID = "",
-        },
-        -- The Nokhud Offensive
-        {
-          zoneID = 2093,
-          mountID = "",
-        },
-        -- Brackenhide Hollow
-        {
-          zoneID = 2096,
-          mountID = "",
-        },
-        -- Algeth'ar Academy
-        {
-          zoneID = 2097,
-          mountID = "",
-        },
-        -- Amirdrassil, the dreams Hoppe
-        {
-          zoneID = 2235,
-          mountID = "",
-        },
-        {
-          zoneID = 2236,
-          mountID = "",
-        },
-        {
-          zoneID = 2237,
-          mountID = "",
+          zoneID = {2200,2241},
+          mountID = ""
         },
       }
     },
     { -- Khaz Algar
       zoneID = 2274,
-      hasZones = true,
-      useZones = true,
-      mountID = 1792,
+      useZones = false,
+      mountID = "",
       zones = {
          -- Dornogal
         {
@@ -996,80 +856,258 @@ R2R.defaults = {
         },
          -- Isle of Dorn
         {
-          zoneID = 2248,
+          zoneID = {2248,2271},
           mountID = ""
         },
          -- The Ringing Deeps
         {
-          zoneID = 2214,
-          mountID = 2144
+          zoneID = {2214,2272},
+          mountID = ""
         },
          -- Hallowfall
         {
-          zoneID = 2215,
-          mountID = 1051
+          zoneID = {2215,2273},
+          mountID = ""
         },
          -- Azj-Kahet
         {
-          zoneID = 2255,
-          mountID = 2181
+          zoneID = {2255, 2256, 2213, 2216},
+          mountID = ""
         },
-         -- Azj-Kahet Lower Levels
+         -- Undermine
         {
-          zoneID = 2256,
-          mountID = 2181
+          zoneID = {2346,2374,2406,2407,2408,2409,2411,2428},
+          mountID = ""
         },
-         -- City of Threads Umbral Bazaar
+      }
+    },
+    { -- Siren Isle
+      zoneID = 2369,
+      useZones = false,
+      mountID = "",
+    }
+  },
+  instances = {
+    raids = {
+      mountID = "",
+      zones = {
+        -- Ruins of Ahn'Oraj
         {
-          zoneID = 2213,
-          mountID = 2181
+          zoneID = 247,
+          mountID = ""
         },
-         -- City of Threads Lower Levels
+        -- Temple of Ahn'Qiraj
         {
-          zoneID = 2216,
-          mountID = 2181
+          zoneID = {319,320,321},
+          mountID = ""
+        },
+        
+      }
+    },
+    dungeons = {
+      mountID = "",
+      zones = {
+        -- Zul'Farrak
+        {
+          zoneID = 219,
+          mountID = "",
+        },
+        -- The Black Morrass
+        {
+          zoneID = 273,
+          mountID = "",
+        },
+        -- Old Hillsbrad Foothills
+        {
+          zoneID = 274,
+          mountID = "",
+        },
+        -- Utgarde Keep
+        {
+          zoneID = {133,134,135},
+          mountID = "",
+        },
+        -- The Oculus
+        {
+          zoneID = {143,144,145,146},
+          mountID = "",
+        },
+        -- Drak'Tharon Keep
+        {
+          zoneID = {160, 161},
+          mountID = "",
+        },
+        -- Well of Eternity
+        {
+          zoneID = 398,
+          mountID = "",
+        },
+        -- The Hour of Twilight
+        {
+          zoneID = {399,400},
+          mountID = "",
+        },
+        -- Lost City of the Tol'vir
+        {
+          zoneID = 277,
+          mountID = "",
+        },
+        -- End Time
+        {
+          zoneID = {401,402,403,404,405,406},
+          mountID = "",
+        },
+        -- Zul'Aman
+        {
+          zoneID = 233,
+          mountID = "",
+        },
+        -- Zul'Gurub
+        {
+          zoneID = {233, 337},
+          mountID = "",
+        },
+        -- Siege of the Nuizao Temple
+        {
+          zoneID = {457, 458, 459},
+          mountID = "",
+        },
+        -- The Shado-Pan Monastery
+        {
+          zoneID = {443, 444,445,446},
+          mountID = "",
+        },
+        -- The Everbloom
+        {
+          zoneID = {620, 621},
+          mountID = "",
+        },
+        -- Iron Docks
+        {
+          zoneID = 595,
+          mountID = "",
+        },
+        -- The Eye of Azshara
+        {
+          zoneID = 713,
+          mountID = "",
+        },
+        -- Darkheart Thicket
+        {
+          zoneID = 733,
+          mountID = "",
+        },
+        -- Court of the Stars
+        {
+          zoneID = {761,762,763},
+          mountID = "",
+        },
+        -- The Maw of Souls (Helmouth Cliffs)
+        {
+          zoneID = {706,707,708},
+          mountID = "",
+        },
+        -- The Halls of Valor
+        {
+          zoneID = {703,704,705,829,2230,2231},
+          mountID = "",
+        },
+        -- Atal'Dazar
+        {
+          zoneID = {934,935},
+          mountID = "",
+        },
+        -- The MOTHERLODE!!
+        {
+          zoneID = 1010,
+          mountID = "",
+        },
+        -- Siege of Boralus
+        {
+          zoneID = 1162,
+          mountID = "",
+        },
+        -- Freehold
+        {
+          zoneID = 936,
+          mountID = "",
+        },
+        -- Mists of Tirna Scithe
+        {
+          zoneID = 1669,
+          mountID = "",
+        },
+        -- The Necrotic Wake
+        {
+          zoneID = {1666,1667,1668},
+          mountID = "",
+        },
+        -- Plaguefall
+        {
+          zoneID = {1674,1697},
+          mountID = "",
+        },
+        -- Tazavesh
+        {
+          zoneID = {1989,1990,1991,1992,1993,1995,1996,1997,2016},
+          mountID = ""
+        },
+        -- Ruby Life Pools
+        {
+          zoneID = 2094,
+          mountID = ""
+        },
+        -- The Nokhud Offensive
+        {
+          zoneID = 2093,
+          mountID = ""
+        },
+        -- Brackenhide Hollow
+        {
+          zoneID = 2096,
+          mountID = ""
+        },
+        -- Algeth'ar Academy
+        {
+          zoneID = 2097,
+          mountID = ""
         },
         -- The Dawnbreaker
         {
           zoneID = 2359,
           mountID = ""
         },
-        -- Priory of the Holy Flame
+        -- Priory of the Sacred Flame
         {
-          zoneID = 2308,
+          zoneID = {2308,2309,2330},
           mountID = ""
         },
-        -- City of Threads
+        -- City of Threads (Dungeon)
         {
-          zoneID = 2343,
+          zoneID = {2343,2344},
           mountID = ""
         },
-        -- Ara-Kara, City of Echos
+        -- City of Echos
         {
-          zoneID = 2357,
+          zoneID = {2357,2358},
           mountID = ""
         },
-        -- The Breeding Ground
+        -- The Rookery
         {
-          zoneID = 2315,
+          zoneID = {2315,2316,2317,2318,2319,2320},
           mountID = ""
         },
-        -- Emberbrew Meadbrewery
+        -- Operation: Floodgate
         {
-          zoneID = 2335,
-          mountID = ""
-        },
-        -- The Stone Vault
-        {
-          zoneID = 2341,
-          mountID = ""
-        },
-        -- Darkflame Rift
-        {
-          zoneID = 2303,
+          zoneID = {2387,2388},
           mountID = ""
         },
       }
-    }
+    },
+    scenarios = {},
+    expeditions = {},
+    delves = {},
+    battlegrounds = {},
+    arenas = {},
   }
 }

@@ -20,12 +20,17 @@ local function CreateButton()
   --[[--------------------------------------------------------------------------
   create children
   --------------------------------------------------------------------------]]--
+  R2R.SkyButton.cooldown = R2R.SkyButton.cooldown or CreateFrame("Cooldown", AddonName .. "Cooldown", R2R.SkyButton, "CooldownFrameTemplate")
   R2R.SkyButton.tooltip = R2R.SkyButton.tooltip or CreateFrame("GameTooltip", AddonName.."Tooltip", UIParent, "GameTooltipTemplate")
   R2R.SkyButton.background = R2R.SkyButton.background or R2R.SkyButton:CreateTexture(AddonName .. "Background", "BACKGROUND")
   R2R.SkyButton.border = R2R.SkyButton.border or R2R.SkyButton:CreateTexture(AddonName .. "Border", "BORDER")
   R2R.SkyButton.icon = R2R.SkyButton.icon or R2R.SkyButton:CreateTexture(AddonName .. "Icon", "ARTWORK")
   R2R.SkyButton.mask = R2R.SkyButton.mask or R2R.SkyButton:CreateMaskTexture()
-
+  R2R.SkyButton.charges = R2R.SkyButton.charges or R2R.SkyButton:CreateFontString(RD.ARTWORK, nil, "GameFontHighlight")
+  R2R.SkyButton.charges:SetPoint(RD.ANCHOR_BOTTOM, R2R.SkyButton.icon, RD.ANCHOR_BOTTOM, 0, R2R.SkyButton:GetHeight() * 0.02)
+  R2R.SkyButton.charges:SetJustifyH(RD.ANCHOR_CENTER)
+  R2R.SkyButton.charges:SetSize(16,16)
+  
   --[[--------------------------------------------------------------------------
   METHODS ---
   This function updates the button's icon, tooltip and cooldown
@@ -36,45 +41,54 @@ local function CreateButton()
     if the character is infight, just return early to prevent the addon throwing a bunch of errors
     secure buttons are not allowed to change in fight therefore we have to prevent this by all meaning  
     ----------------------------------------------------------------------]]--
-      if IsOutdoors() or IsIndoors() == nil then
-        r2r.id = R2R:GetMountID()
-      else
-        r2r.id = R2R.db.bindings.indoors
+    r2r.id = R2R:GetMountID()
+
+    if not r2r.id or r2r.id == "" then
+      R2R.SkyButton:Clear()
+      return
+    end
+    R2R.SkyButton.charges:SetText("")
+    
+    if r2r.id ~= R2R.db.bindings.indoors and R2R:IsMount(r2r.id) then
+      r2r.name, r2r.spellID, r2r.icon = R2R:GetMount(r2r.id)
+      r2r.spellName = C_Spell.GetSpellInfo(r2r.spellID).name
+      R2R.SkyButton.cooldown:Hide()
+    else
+      local spell = C_Spell.GetSpellInfo(r2r.id)
+      r2r.spellName = spell.name
+      r2r.name = r2r.spellName
+      r2r.icon = spell.iconID
+      r2r.spellID = spell.spellID
+
+      local chargeInfo = C_Spell.GetSpellCharges(r2r.spellID)
+      -- print(RD.Helper.table:Dump(chargeInfo))
+      local hasCharges = chargeInfo and chargeInfo.maxCharges > 1 and chargeInfo.currentCharges > 0
+
+      if hasCharges then
+        R2R.SkyButton.charges:SetText(
+          RD.Helper.color:Get("white", nil, chargeInfo.currentCharges)
+        )
       end
 
-
-      if not r2r.id or r2r.id == "" then
+      if not C_Spell.IsSpellUsable(r2r.spellID) and not IsSpellKnownOrOverridesKnown(r2r.spellID) and not C_Spell.IsClassTalentSpell(r2r.spellID) then
+        r2r.id = nil
         R2R.SkyButton:Clear()
         return
-      else
-        local spell = C_Spell.GetSpellInfo(r2r.id)
-        if not spell then
-          r2r.name, r2r.spellID, r2r.icon = R2R:GetMount(r2r.id)
-        else
-          r2r.name = spell.name
-          r2r.icon = spell.iconID
-          r2r.spellID = spell.spellID
-  
-          if not IsSpellKnown(r2r.spellID) then
-            r2r.id = nil
-            R2R.SkyButton:Clear()
-            return
-          end
-        end
       end
+    end
 
+    
+    --[[----------------------------------------------------------------------
+    set icon
+    ----------------------------------------------------------------------]]--
+    R2R.SkyButton.icon:SetTexture(r2r.icon)
+    --[[----------------------------------------------------------------------
+    update functionality
+    ----------------------------------------------------------------------]]--
+    R2R.SkyButton:SetAttribute("spell1", r2r.spellName)
 
-      --[[----------------------------------------------------------------------
-      set icon
-      ----------------------------------------------------------------------]]--
-      R2R.SkyButton.icon:SetTexture(r2r.icon)
-      --[[----------------------------------------------------------------------
-      update functionality
-      ----------------------------------------------------------------------]]--
-        R2R.SkyButton:SetAttribute("spell1", C_Spell.GetSpellInfo(r2r.spellID).name)
-      if r2r.id then
-        R2R.SkyButton:Show()
-      end
+    if r2r.id then R2R.SkyButton:Show() end
+    if r2r.id == r2r.spellID then R2R.SkyButton.cooldown:Show() end
   end
 
   r2r.iconPos = 0
@@ -109,14 +123,10 @@ local function CreateButton()
   --------------------------------------------------------------------------]]--
   R2R.SkyButton:RegisterForClicks("LeftButtonDown", "RightButtonDown")
   R2R.SkyButton:SetAttribute("type", "spell")
-  R2R.SkyButton:SetAttribute("alt-type1", "spell")
-  R2R.SkyButton:SetAttribute("ctrl-type1", "spell")
-  R2R.SkyButton:SetAttribute("altshift-type1", "spell")
   R2R.SkyButton:SetAttribute("shift-type1", "report")
 
   -- R2R.SkyButton:SetAttribute("spell1", C_Spell.GetSpellInfo(r2r.spellID).name)
   R2R.SkyButton:SetAttribute("spell2", C_Spell.GetSpellInfo(460002).name)
-
   R2R.SkyButton:SetAttribute("_report", function()
     local zoneID = C_Map.GetBestMapForUnit("player")
     local continent = R2R:GetContinent(zoneID)
@@ -127,7 +137,13 @@ local function CreateButton()
     
     C_Timer.After(2, function() UIFrameFadeOut(text, 0.25, 1, 0) end)
   end)
-  
+  --[[------------------------------------------------------------------------
+  cooldown positioning
+  ------------------------------------------------------------------------]]--
+  R2R.SkyButton.cooldown:SetAllPoints(R2R.SkyButton.icon)
+  R2R.SkyButton.cooldown:SetUseCircularEdge(true)
+  R2R.SkyButton.cooldown:SetDrawSwipe(false)
+  R2R.SkyButton.cooldown:SetDrawEdge(true)
 
   --[[------------------------------------------------------------------------
   button background positioning
@@ -185,7 +201,10 @@ function R2R:InitializeButton()
   ------------------------------------------------------------------------]]--
     R2R.SkyButton:RegisterEvent("MOUNT_JOURNAL_USABILITY_CHANGED")
     R2R.SkyButton:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+    R2R.SkyButton:RegisterEvent("SPELL_UPDATE_COOLDOWN")
     R2R.SkyButton:RegisterEvent("PLAYER_REGEN_ENABLED")
+    R2R.SkyButton:RegisterEvent("PLAYER_STARTED_MOVING")
+    R2R.SkyButton:RegisterEvent("PLAYER_STOPPED_MOVING")
     R2R.SkyButton:RegisterEvent("ZONE_CHANGED")
   --[[------------------------------------------------------------------------
   generic event handler so we can implement dedicated methods for each event
@@ -196,19 +215,12 @@ function R2R:InitializeButton()
       R2R.SkyButton:Update()
     end
 
-    -- function R2R.SkyButton:MODIFIER_STATE_CHANGED(evt, key, down)
-    --   if InCombatLockdown() then return end
-      
-    --   if down > 0 then
-    --     if key == "LALT" then R2R.ActiveKeys[1] = key end
-    --     if key == "LCTRL" then R2R.ActiveKeys[2] = key end
-    --     if key == "LSHIFT" then R2R.ActiveKeys[3] = key end
-    --   else
-    --     if key == "LALT" then R2R.ActiveKeys[1] = nil end
-    --     if key == "LCTRL" then R2R.ActiveKeys[2] = nil end
-    --     if key == "LSHIFT" then R2R.ActiveKeys[3] = nil end
-    --   end
-    -- end
+    function R2R.SkyButton:SPELL_UPDATE_COOLDOWN(evt, spellID, baseSpellID)
+      if not r2r.spellID or spellID ~= r2r.spellID then return end
+      local cdInfo = C_Spell.GetSpellCooldown(r2r.spellID)
+      R2R.SkyButton.cooldown:SetCooldown(cdInfo.startTime, cdInfo.duration)
+      R2R.SkyButton.cooldown:Show()
+    end
   --[[------------------------------------------------------------------------
   handling the mouseover event to show the tooltip of the selected mount
   ------------------------------------------------------------------------]]--
@@ -218,20 +230,19 @@ function R2R:InitializeButton()
         --[[----------------------------------------------------------------------
         set tooltip
         ----------------------------------------------------------------------]]--
-        local isSpell = C_Spell.GetSpellInfo(r2r.id) ~= nil
-        if not isSpell then
-            R2R.SkyButton.tooltip:SetMountBySpellID(r2r.spellID)
-          else
-            local i = 1
-            local spellBookID = nil
-            while true do
-              local spell = C_SpellBook.GetSpellBookItemName(i, 0)
-              if (not spell) then break end
-              if spell == r2r.name then spellBookID = i end
-              i = i + 1
-            end
-            R2R.SkyButton.tooltip:SetSpellBookItem(spellBookID, 0)
+        if R2R:IsMount(r2r.id) then
+          R2R.SkyButton.tooltip:SetMountBySpellID(r2r.spellID)
+        else
+          local i = 1
+          local spellBookID = nil
+          while true do
+            local spell = C_SpellBook.GetSpellBookItemName(i, 0)
+            if (not spell) then break end
+            if spell == r2r.name then spellBookID = i end
+            i = i + 1
           end
+          R2R.SkyButton.tooltip:SetSpellBookItem(spellBookID, 0)
+        end
         R2R.SkyButton.tooltip:Show()
       end
     end
@@ -249,6 +260,7 @@ function R2R:InitializeButton()
     R2R.SkyButton:SetScript("OnEvent", OnEvent)
     R2R.SkyButton:SetScript("OnEnter", OnEnter)
     R2R.SkyButton:SetScript("OnLeave", OnLeave)
+
     R2R.SkyButton:SetScript("OnMouseDown", function(self, button)
       if button ~= "MiddleButton" then return end
       ButtonPosition.origin = {R2R.SkyButton:GetPoint(1)}

@@ -17,12 +17,48 @@ local selectorTileWidth = 96
 local selectorTileHeight = selectorTileWidth * 1.5
 local inset = 10
 
+local selectorTextures = {
+  normal = MountSelectorSelectorNormal,
+  highlight = MountSelectorSelectorHighlight,
+  active = MountSelectorSelectorActive,
+}
+
 local filterTextures = {
   MountSelectorFilterGrounded,
   MountSelectorFilterFlying,
   MountSelectorFilterAquatic,
   MountSelectorFilterDynamic,
 }
+
+local function GetMountModel(wrapper, field, idx)
+  local mount = wrapper.mounts[idx + pageSize * (wrapper.page - 1)]
+  if wrapper.page == 1 then mount = wrapper.mounts[idx] end
+  
+  if mount then
+    wrapper.Selectors[idx].value = mount.val
+    wrapper.Selectors[idx].tt_txt = mount.txt
+    wrapper.Selectors[idx]:Show()
+
+    if wrapper.Selectors[idx].value ~= "" then
+      local creatureID = C_MountJournal.GetAllCreatureDisplayIDsForMountID(wrapper.Selectors[idx].value)[1]
+      wrapper.Selectors[idx].Model:SetDisplayInfo(creatureID)
+    else
+      wrapper.Selectors[idx].Model:ClearModel()
+    end
+
+    if field:GetText() == wrapper.Selectors[idx].tt_txt or field:GetText() == wrapper.Selectors[idx].value then
+      wrapper.Selectors[idx]:SetChecked(true)
+      wrapper.Selectors[idx].tex:SetTexture(selectorTextures.active)
+    else
+      wrapper.Selectors[idx]:SetChecked(false)
+      wrapper.Selectors[idx].tex:SetTexture(selectorTextures.normal)
+    end
+  else
+    wrapper.Selectors[idx]:Hide()
+    wrapper.Selectors[idx].Model:ClearModel()
+  end
+
+end
 
 local function BuildGrid(wrapper, field)
   local to = #wrapper.mounts
@@ -46,11 +82,6 @@ local function BuildGrid(wrapper, field)
       y = -(inset)
     end
     
-    local textures = {
-      normal = MountSelectorSelectorNormal,
-      highlight = MountSelectorSelectorHighlight,
-      active = MountSelectorSelectorActive,
-    }
     local btnName = format("%s_%s_%s_%d", data.prefix, data.keyword, wrapper:GetName().."Selector", i)
     local mount = wrapper.mounts[i]
     wrapper.Selectors[i] = wrapper.Selectors[i] or READI:RadioButton(data, {
@@ -58,7 +89,7 @@ local function BuildGrid(wrapper, field)
       region = wrapper,
       width = selectorTileWidth,
       height = selectorTileHeight,
-      textures = textures,
+      textures = selectorTextures,
       option = field:GetName(),
       condition = field:GetText() == mount.txt or field:GetText() == mount.val,
       value = mount.val,
@@ -71,10 +102,10 @@ local function BuildGrid(wrapper, field)
         for i=1, #wrapper.Selectors do
           local btn = wrapper.Selectors[i]
           btn:SetChecked(false)
-          btn.tex:SetTexture(textures.normal)
+          btn.tex:SetTexture(selectorTextures.normal)
         end
         self:SetChecked(true)
-        self.tex:SetTexture(textures.active)
+        self.tex:SetTexture(selectorTextures.active)
 
         if type(self.value) == "string" then
           R2R.MountSelector.selection = self.value
@@ -97,47 +128,19 @@ local function BuildGrid(wrapper, field)
     end
 
   end
+
 end
 
 local function UpdateGrid(wrapper, field)
-  local textures = {
-    normal = MountSelectorSelectorNormal,
-    highlight = MountSelectorSelectorHighlight,
-    active = MountSelectorSelectorActive,
-  }
   local to = #wrapper.mounts
   if #wrapper.mounts > pageSize then
     to = pageSize
   end
 
   for i=1, to do
-    local mount = wrapper.mounts[i + pageSize * (wrapper.page - 1)]
-    if wrapper.page == 1 then mount = wrapper.mounts[i] end
-
-    if mount then
-      wrapper.Selectors[i].value = mount.val
-      wrapper.Selectors[i].tt_txt = mount.txt
-      wrapper.Selectors[i]:Show()
-
-      if wrapper.Selectors[i].value ~= "" then
-        local creatureID = C_MountJournal.GetAllCreatureDisplayIDsForMountID(wrapper.Selectors[i].value)[1]
-        wrapper.Selectors[i].Model:SetDisplayInfo(creatureID)
-        else
-        wrapper.Selectors[i].Model:ClearModel()
-      end
-
-      if field:GetText() == wrapper.Selectors[i].tt_txt or field:GetText() == wrapper.Selectors[i].value then
-        wrapper.Selectors[i]:SetChecked(true)
-        wrapper.Selectors[i].tex:SetTexture(textures.active)
-      else
-        wrapper.Selectors[i]:SetChecked(false)
-        wrapper.Selectors[i].tex:SetTexture(textures.normal)
-      end
-    else
-      wrapper.Selectors[i]:Hide()
-      wrapper.Selectors[i].Model:ClearModel()
-    end
+    GetMountModel(wrapper, field, i)
   end
+
 end
 
 local function Paging(wrapper, delta, field)
@@ -153,6 +156,12 @@ local function Paging(wrapper, delta, field)
   R2R.MountSelector.PagingNext:SetEnabled(wrapper.page < wrapper.maxPages)
 
   UpdateGrid(wrapper, field)
+
+  if wrapper.page == 1 then
+    GetMountModel(wrapper, field, 2)
+  else
+    GetMountModel(wrapper, field, 1)
+  end
 end
 
 function R2R.MountSelector:Init()
@@ -343,31 +352,40 @@ function R2R.MountSelector:Open(field)
     R2R.MountSelector.Filters[i]:RegisterForClicks("LeftButtonDown")
     R2R.MountSelector.Filters[i]:SetAttribute("type", "filter")
     R2R.MountSelector.Filters[i]:SetAttribute("_filter", function()
+      local wrapper = R2R.MountSelector.Filters[i].Wrapper
+      if wrapper:IsShown() then return end
       for x=1, #R2R.MountSelector.Filters do
         R2R.MountSelector.Filters[x]:SetHighlightLocked(false)
         R2R.MountSelector.Filters[x].Wrapper:Hide()
       end
       R2R.MountSelector.Filters[i]:SetHighlightLocked(true)
-      R2R.MountSelector.Filters[i].Wrapper:Show()
-      R2R.MountSelector.Filters[i].Wrapper.page = 1
-      R2R.MountSelector.Filters[i].Wrapper.maxPages = R2R.MountSelector.Mounts[i]
+      wrapper:Show()
+      wrapper.page = 1
+      wrapper.maxPages = R2R.MountSelector.Mounts[i]
       if R2R.MountSelector.PagingText then
-        R2R.MountSelector.PagingText:SetText(RD.Helper.color:Get("white", nil, format("%s %d %s %d", R2R.L["Page"], R2R.MountSelector.Filters[i].Wrapper.page, R2R.L["of"], R2R.MountSelector.Filters[i].Wrapper.maxPages)))
+        R2R.MountSelector.PagingText:SetText(RD.Helper.color:Get("white", nil, format("%s %d %s %d", R2R.L["Page"], wrapper.page, R2R.L["of"], wrapper.maxPages)))
       end
 
       if R2R.MountSelector.PagingBack then
-        R2R.MountSelector.PagingBack:SetEnabled(R2R.MountSelector.Filters[i].Wrapper.page > 1)
+        R2R.MountSelector.PagingBack:SetEnabled(wrapper.page > 1)
       end
       if R2R.MountSelector.PagingNext then
-        R2R.MountSelector.PagingNext:SetEnabled(R2R.MountSelector.Filters[i].Wrapper.page < R2R.MountSelector.Filters[i].Wrapper.maxPages)
+        R2R.MountSelector.PagingNext:SetEnabled(wrapper.page < wrapper.maxPages)
       end
 
 
-      if #R2R.MountSelector.Filters[i].Wrapper.Selectors == 0 then
-        BuildGrid(R2R.MountSelector.Filters[i].Wrapper, field)
+      if #wrapper.Selectors == 0 then
+        BuildGrid(wrapper, field)
       else
-        UpdateGrid(R2R.MountSelector.Filters[i].Wrapper, field)
+        UpdateGrid(wrapper, field)
       end
+
+      if wrapper.page == 1 then
+        GetMountModel(wrapper, field, 2)
+      else
+        GetMountModel(wrapper, field, 1)
+      end
+    
     end)
 
     if i == 1 then R2R.MountSelector.Filters[i]:Click("LeftButton", 1) end

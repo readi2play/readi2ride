@@ -3,6 +3,7 @@ BASICS
 ----------------------------------------------------------------------------]]--
 local AddonName, r2r = ...
 local data = CopyTable(R2R.data)
+local namingPrefix = "SettingsPanel"
 data.keyword = "anchoring"
 --------------------------------------------------------------------------------
 -- OPTIONS PANEL CREATION
@@ -13,7 +14,6 @@ R2R.Anchoring = R2R.Anchoring or {
 local _posXname,_posYname,_parentName,_sizeName,_strataName
 
 function R2R:FillAnchoringPanel(panel, container, anchorline)
-  local namingPrefix = "SettingsPanel"
   if panel == R2R.ConfigDialog then
     r2r.windowWidth = ceil(container:GetWidth() - 20)
     namingPrefix = "ConfigPanel"
@@ -246,7 +246,7 @@ function R2R:FillAnchoringPanel(panel, container, anchorline)
   R2R.Anchoring.fields[_sizeName] = READI:Slider(data, {
     region = container,
     name = _sizeName,
-    min = 16,
+    min = 24,
     max = 64,
     step = 8,
     value = R2R.db.anchoring.button_size or R2R.defaults.anchoring.button_size,
@@ -322,9 +322,11 @@ function R2R.Anchoring:Update()
   for _,val in pairs({"button", "parent"}) do
     for i, anchor in pairs(READI.Anchors) do
       local rb = R2R.Anchoring.fields[format("%s%sRadioButton_%s_%s", data.prefix, namingPrefix, format("%s_anchor", val), anchor)]
-      if rb.value == R2R.db.anchoring[format("%s%s%s_anchor", data.prefix, namingPrefix, val)] then
-        rb:Click()
-        break;
+      if rb then 
+        if rb.value == R2R.db.anchoring[format("%s%s%s_anchor", data.prefix, namingPrefix, val)] then
+          rb:Click()
+          break;
+        end
       end
     end
   end
