@@ -122,7 +122,7 @@ R2R.defaults = {
         },
         -- Silithus
         {
-          zoneID = {81,1321,2354},
+          zoneID = {81,327,1321,2354},
           mountID = ""
         },
         -- Southern Barrens
@@ -134,7 +134,7 @@ R2R.defaults = {
         {
           zoneID = {65,1312},
           mountID = ""
-        },
+        },  
         -- Tanaris
         {
           zoneID = {71,1316},
@@ -877,6 +877,11 @@ R2R.defaults = {
          -- Undermine
         {
           zoneID = {2346,2374,2406,2407,2408,2409,2411,2428},
+          mountID = ""
+        },
+         -- K'aresh
+        {
+          zoneID = {2371, 2472},
           mountID = ""
         },
       }
