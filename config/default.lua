@@ -20,6 +20,11 @@ R2R.defaults = {
     },
   },
   continents = {
+    { -- Exile's Reach
+      zoneID = 1409,
+      useZones = false,
+      mountID = "",
+    },
     { -- Darkmoon Island
       zoneID = 407,
       useZones = false,
@@ -469,7 +474,7 @@ R2R.defaults = {
       }
     },
     { -- The Maelstrom
-      zoneID = 948,
+      zoneID = {948, 726},
       useZones = false,
       mountID = "",
       zones = {
@@ -767,7 +772,7 @@ R2R.defaults = {
         },
         -- Bastion
         {
-          zoneID = {1533,1569},
+          zoneID = {1533,1569,1707},
           mountID = ""
         },
         -- Maldraxxus
@@ -782,7 +787,7 @@ R2R.defaults = {
         },
         -- Ardenweald
         {
-          zoneID = {1565,1643,1740},
+          zoneID = {1565,1643,1740,1701},
           mountID = ""
         },
         -- Oribos
@@ -824,7 +829,7 @@ R2R.defaults = {
         },
         -- Thaldraszus
         {
-          zoneID = {2025,2113,2130,2134,2135, 2085},
+          zoneID = {2025,2112,2113,2130,2134,2135,2085},
           mountID = ""
         },
         -- Forbidden Reach
@@ -849,37 +854,37 @@ R2R.defaults = {
       useZones = false,
       mountID = "",
       zones = {
-         -- Dornogal
+        -- Dornogal
         {
           zoneID = 2339,
           mountID = ""
         },
-         -- Isle of Dorn
+        -- Isle of Dorn
         {
           zoneID = {2248,2271},
           mountID = ""
         },
-         -- The Ringing Deeps
+        -- The Ringing Deeps
         {
           zoneID = {2214,2272},
           mountID = ""
         },
-         -- Hallowfall
+        -- Hallowfall
         {
           zoneID = {2215,2273},
           mountID = ""
         },
-         -- Azj-Kahet
+        -- Azj-Kahet
         {
           zoneID = {2255, 2256, 2213, 2216},
           mountID = ""
         },
-         -- Undermine
+        -- Undermine
         {
           zoneID = {2346,2374,2406,2407,2408,2409,2411,2428},
           mountID = ""
         },
-         -- K'aresh
+        -- K'aresh
         {
           zoneID = {2371, 2472},
           mountID = ""
@@ -890,7 +895,39 @@ R2R.defaults = {
       zoneID = 2369,
       useZones = false,
       mountID = "",
-    }
+    },
+    { -- Razorwind Shores
+      zoneID = 2351,
+      useZones = false,
+      mountID = "",
+    },
+    { -- Quel'Thalas
+      zoneID = 2537,
+      useZones = false,
+      mountID = "",
+      zones = {
+        -- Silvermoon, Eversong Forest & Isle of Quel'danas
+        {
+          zoneID = {2395,2393,2424},
+          mountID = ""
+        },
+        -- Zul'Aman
+        {
+          zoneID = 2437,
+          mountID = ""
+        },
+        -- Harandar
+        {
+          zoneID = {2413, 2576},
+          mountID = ""
+        },
+        -- Voidstorm & Brawlers Heights
+        {
+          zoneID = {2405, 2444},
+          mountID = ""
+        },
+      }
+    },
   },
   instances = {
     raids = {

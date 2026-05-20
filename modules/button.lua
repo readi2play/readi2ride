@@ -126,8 +126,8 @@ local function CreateButton()
   R2R.SkyButton:SetAttribute("shift-type1", "report")
 
   -- R2R.SkyButton:SetAttribute("spell1", C_Spell.GetSpellInfo(r2r.spellID).name)
-  R2R.SkyButton:SetAttribute("spell2", C_Spell.GetSpellInfo(460002).name)
-  R2R.SkyButton:SetAttribute("_report", function()
+
+  function R2R.SkyButton:Report()
     local zoneID = C_Map.GetBestMapForUnit("player")
     local continent = R2R:GetContinent(zoneID)
     local zoneReport = format("%s (%d) in %s (%d)", C_Map.GetMapInfo(zoneID).name, zoneID, continent.name or "Unknown", continent.mapID)
@@ -135,8 +135,11 @@ local function CreateButton()
     text:SetPoint("TOP", 0, -125)
     text:SetText( READI.Helper.color:Get("system", R2R.Colors, zoneReport) )
     
-    C_Timer.After(2, function() UIFrameFadeOut(text, 0.25, 1, 0) end)
-  end)
+    C_Timer.After(5, function() UIFrameFadeOut(text, 0.25, 1, 0) end)
+  end
+
+  R2R.SkyButton:SetAttribute("spell2", C_Spell.GetSpellInfo(460002).name)
+  R2R.SkyButton:SetAttribute("_report", R2R.SkyButton.Report)
   --[[------------------------------------------------------------------------
   cooldown positioning
   ------------------------------------------------------------------------]]--

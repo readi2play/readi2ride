@@ -105,11 +105,7 @@ function R2R:GetContinent(zoneID)
     local info = C_Map.GetMapInfo(zoneID)
     if not info then return _r end
 
-    if info.parentMapID == 0 then
-        local fallback = R2R.db.continents[#R2R.db.continents]
-        _r = C_Map.GetMapInfo(fallback.zoneID)
-        return _r
-    end
+    if info.parentMapID == 0 then return _r end
 
     while info.mapType and info.mapType > 2 do
         info = C_Map.GetMapInfo(info.parentMapID)
@@ -172,6 +168,10 @@ function R2R:GetFilteredListOfMounts(filter, ...)
 end
 
 function R2R:GetMountID()
+    R2R.FallBackMount = C_MountJournal.GetDisplayedMountID(1)
+    local id = R2R.FallBackMount
+    local hasZones = false
+
     if IsSubmerged() then
         local hasAbility = R2R.db.bindings.swimming.ability ~= ""
         if hasAbility then
@@ -181,9 +181,9 @@ function R2R:GetMountID()
         end
     end
 
-    R2R.FallBackMount = C_MountJournal.GetDisplayedMountID(1)
     R2R.ZoneID = C_Map.GetBestMapForUnit("player")
     if not R2R.ZoneID then return nil end
+    -- print(R2R:GetContinent(R2R.ZoneID))
     R2R.ContinentID = R2R:GetContinent(R2R.ZoneID).mapID or R2R.ZoneID
 
     local currentContinent = RD.Helper.table:Filter(R2R.db.continents, function(c)
@@ -192,22 +192,25 @@ function R2R:GetMountID()
         end
         return c.zoneID == R2R.ContinentID
     end)[1]
-    local id = currentContinent.mountID
-    local hasZones = currentContinent.zones and #currentContinent.zones > 0
-    if hasZones and currentContinent.useZones then
-        local currentZone = RD.Helper.table:Filter(currentContinent.zones, function(z)
-            if type(z.zoneID) == "table" then
-                return READI.Helper.table:Contains(R2R.ZoneID, z.zoneID)
-            else
-                return R2R.ZoneID == z.zoneID
+
+    if currentContinent then
+        id = currentContinent.mountID or C_Map.GetBestMapForUnit("player")
+        hasZones = currentContinent.zones and #currentContinent.zones > 0
+        if hasZones and currentContinent.useZones then
+            local currentZone = RD.Helper.table:Filter(currentContinent.zones, function(z)
+                if type(z.zoneID) == "table" then
+                    return READI.Helper.table:Contains(R2R.ZoneID, z.zoneID)
+                else
+                    return R2R.ZoneID == z.zoneID
+                end
+            end)[1]
+            if currentZone and currentZone.mountID ~= "" then
+                id = currentZone.mountID
             end
-        end)[1]
-        if currentZone and currentZone.mountID ~= "" then
-            id = currentZone.mountID
         end
     end
 
-    if id == "" then return nil end
+    if id == "" or not id then return nil end
 
     local isUsable = false
     local isInstantSpell = false
@@ -216,6 +219,16 @@ function R2R:GetMountID()
         local _,_,_,_,canMount = C_MountJournal.GetMountInfoByID(id)
         isUsable = C_MountJournal.GetMountUsabilityByID(id, true) and canMount
     else
+        if id == 1215279 then id = 460013 end
+        --[[
+            the above is a hardcoded workaround because the 99-G-Neckbreaker exists twice
+            - once as an high-priority instant spell with id 1215279
+            - once as mount-like spell with id 460013 and a casting time of 1.5 seconds
+
+            this would lead to an unexpected behaviour if one selects the 99-G-Neckbreaker
+            as "mount" for Undermine, which is a logical choice as it would override the
+            in-movement-funcationality
+        ]]--
         local _,_,_,_,canMount = C_MountJournal.GetMountInfoByID(R2R.FallBackMount)
         isUsable = C_Spell.IsSpellUsable(id) and canMount
         local spellInfo = C_Spell.GetSpellInfo(id) 
@@ -241,7 +254,7 @@ function R2R:GetMount(id)
 end
 
 function R2R:IsMount(id)
-    if not id then return end
+    if not id then return false end
     local name, spellID, icon = R2R:GetMount(id)
     return (name and spellID and icon) ~= nil
 end
@@ -291,6 +304,10 @@ function R2R:InitializeDB()
 end
 --[[------------------------------------------------------------------------]] --
 _G[AddonName .. '_Options'] = function(key)
+    if key == "report" then
+        R2R.SkyButton:Report()
+        return
+    end
     _G[R2R.data.prefix .. RD.Helper.string:Capitalize(key) .. "TabButton"]:Click()
     R2R.ConfigDialog:Show()
     -- Settings.OpenToCategory(AddonName)
@@ -306,7 +323,7 @@ SLASH_R2R1 = "/sky"
 -- define the corresponding slash command handlers
 SlashCmdList.R2R = function(msg, editBox)
     msg = string.lower(msg)
-    local configKeywords = {"mounts", "specials", "anchoring", "profiles"}
+    local configKeywords = {"mounts", "specials", "anchoring", "profiles", "report"}
 
     if READI.Helper.table:Contains(msg, configKeywords) then
         _G[AddonName .. '_Options'](msg)
