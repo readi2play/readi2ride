@@ -913,7 +913,7 @@ R2R.defaults = {
         },
         -- Zul'Aman
         {
-          zoneID = 2437,
+          zoneID = {2437,2536},
           mountID = ""
         },
         -- Harandar
